@@ -1,0 +1,7 @@
+from django.contrib import admin
+
+from commerce.models import *
+
+admin.site.register(Product)
+admin.site.register(ProductReview)
+admin.site.register(Buyer)
