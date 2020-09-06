@@ -1,50 +1,54 @@
 package com.example.kk_commerce.Fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.example.kk_commerce.Adapters.ProductAdapter;
+import com.example.kk_commerce.Adapters.ReviewAdapter;
+import com.example.kk_commerce.Models.Product;
+import com.example.kk_commerce.Models.Token;
+import com.example.kk_commerce.ProductDetailActivity;
 import com.example.kk_commerce.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CartFragment extends Fragment {
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.kk_commerce.Constants.BASE_URL;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class CartFragment extends Fragment implements ProductAdapter.ItemListener {
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager RecyclerViewLayoutManager;
+    ProductAdapter adapter;
+    String m_token;
+    AlertDialog.Builder builder;
+    TextView text_username, text_password;
 
     public CartFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CartFragment newInstance(String param1, String param2) {
+    public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -52,15 +56,108 @@ public class CartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false);
+        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(RecyclerViewLayoutManager);
+
+        SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
+        m_token = String.valueOf(preferences.getString("token", "1"));
+
+        if (! m_token.equals("1")){
+            get_data(m_token);
+        }else {
+            getDialog();
+        }
+
+        return view;
     }
+
+    @Override
+    public void onItemClick(Product product) {
+
+    }
+
+    public void get_data(String token){
+        AndroidNetworking.get( BASE_URL + "cart")
+                .setTag("Cart")
+                .addHeaders("Authorization","Token " + token)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(Product.class, new ParsedRequestListener<List<Product>>(){
+                    @Override
+                    public void onResponse(List<Product> products) {
+                        adapter = new ProductAdapter(getContext(), products, CartFragment.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void getDialog() {
+        builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View mView = inflater.inflate(R.layout.dialog_signin, null);
+        text_username = mView.findViewById(R.id.username);
+        text_password = mView.findViewById(R.id.password);
+
+        builder.setView(mView)
+                // Add action buttons
+                .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String username = text_username.getText().toString().trim();
+                        String password = text_password.getText().toString().trim();
+                        login(username, password, dialog);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    public void login(String username, String password, final DialogInterface dialogInterface){
+        AndroidNetworking.post(BASE_URL + "login")
+                .addBodyParameter("consumer_key", username)
+                .addBodyParameter("consumer_password", password)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsObject(Token.class, new ParsedRequestListener<Token>(){
+                    @Override
+                    public void onResponse(Token token) {
+                        SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("token", token.getToken());
+                        editor.apply();
+                        m_token = token.getToken();
+                        dialogInterface.dismiss();
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        Log.i("conn", ""+ error);
+                        if(error.getErrorCode() == 0){
+                            Toast.makeText(getContext(), "Network Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
 }

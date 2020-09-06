@@ -4,4 +4,5 @@ from commerce.models import *
 
 admin.site.register(Product)
 admin.site.register(ProductReview)
-admin.site.register(Buyer)
+admin.site.register(Order)
+admin.site.register(OrderItem)

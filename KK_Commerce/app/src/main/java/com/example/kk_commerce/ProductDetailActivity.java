@@ -27,6 +27,7 @@ import com.example.kk_commerce.Adapters.ProductAdapter;
 import com.example.kk_commerce.Adapters.ProductImagesAdapter;
 import com.example.kk_commerce.Adapters.ReviewAdapter;
 import com.example.kk_commerce.Fragments.HomeFragment;
+import com.example.kk_commerce.Models.Order;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.ProductReview;
 import com.example.kk_commerce.Models.Token;
@@ -47,7 +48,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
     ReviewAdapter adapter2;
     Button add_to_cart;
     AlertDialog.Builder builder;
-    String m_token;
+    String m_token, product_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,16 +76,17 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
         recyclerView.setLayoutManager(RecyclerViewLayoutManager);
         HorizontalLayout = new LinearLayoutManager(ProductDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(HorizontalLayout);
-        get_product(intent.getStringExtra("product_id"));
-        getReviews(intent.getStringExtra("product_id"));
+        product_id = intent.getStringExtra("product_id");
+        get_product(product_id);
+        getReviews(product_id);
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
         m_token = String.valueOf(preferences.getString("token", "1"));
-
         add_to_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (! m_token.equals("1")){
+                    add_To_Cart(product_id, m_token);
                     Toast.makeText(ProductDetailActivity.this, ""+m_token, Toast.LENGTH_LONG).show();
                 }else {
                     getDialog();
@@ -124,7 +126,6 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                     }
                 });
     }
-
     public void getReviews(String product_id){
         AndroidNetworking.get( BASE_URL + "product/reviews/" + product_id + "/")
                 .setTag("Product Reviews")
@@ -150,24 +151,23 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
 
     }
 
-    public void add_To_Cart(String product_id){
-        AndroidNetworking.get( BASE_URL + "product/reviews/" + product_id + "/")
+    public void add_To_Cart(String product_id, String token){
+        AndroidNetworking.get( BASE_URL + "add/to/cart/" + product_id)
                 .setTag("Product Reviews")
+                .addHeaders("Authorization","Token " + token)
                 .setPriority(Priority.LOW)
                 .build()
-                .getAsObjectList(ProductReview.class, new ParsedRequestListener<List<ProductReview>>(){
+                .getAsObject(Order.class, new ParsedRequestListener<Order>(){
                     @Override
-                    public void onResponse(List<ProductReview> productReviews) {
-
+                    public void onResponse(Order order) {
+                        Toast.makeText(getApplicationContext(), "Cart" + order.getProduct_count(), Toast.LENGTH_LONG).show();
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         Toast.makeText(getApplicationContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
-
     public void getDialog() {
         builder = new AlertDialog.Builder(ProductDetailActivity.this);
         LayoutInflater inflater = ProductDetailActivity.this.getLayoutInflater();

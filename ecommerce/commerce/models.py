@@ -82,6 +82,23 @@ class Order(models.Model):
             products.append(order_item.product)
         return len(products)
 
+    @property
+    def products(self):
+        order_items = OrderItem.objects.filter(order_id=self.id)
+        products = []
+        for order_item in order_items:
+            products.append(order_item.product)
+        return products
+
+    @property
+    def total_amount(self):
+        order_items = OrderItem.objects.filter(order_id=self.id)
+        total_value = 0
+        for order_item in order_items:
+            value = order_item.product.unit_price * order_item.quantity
+            total_value += value
+        return total_value
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

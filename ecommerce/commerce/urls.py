@@ -29,4 +29,5 @@ urlpatterns = [
 
     path('login', views.get_access_token),
     path('cart', views.get_cart),
+    path('add/to/cart/<int:product_id>', views.add_to_cart)
 ]

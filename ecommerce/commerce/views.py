@@ -173,49 +173,54 @@ def product_comments(request, product_id):
 @api_view(["GET"])
 @permission_classes((AllowAny,))
 def add_to_cart(request, product_id):
-    order = Order.objects.filter(buyer_id='', ordered=False).first()
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    print(token)
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    order = Order.objects.filter(buyer_id=buyer.id, ordered=False).first()
     if order is not None:
+        print(order)
         order_item = OrderItem.objects.filter(order_id=order.id, product_id=product_id).first()
         if order_item is not None:
+            print(order_item)
             old_quantity = order_item.quantity
-            old_quantity += 1
-            order_item.quantity = old_quantity
+            new_quantity = old_quantity + 1
+            order_item.quantity = new_quantity
             order_item.save()
-            return Response(status=status.HTTP_200_OK)
+            o = OrderSerializer(order, many=False)
+            return Response(o.data, status=status.HTTP_200_OK)
         else:
             OrderItem.objects.create(
                 order = order,
                 quantity=1,
                 product_id=product_id
             )
-            return Response(status=status.HTTP_200_OK)
+            o = OrderSerializer(order, many=False)
+            return Response(o.data, status=status.HTTP_200_OK)
     else:
         order = Order.objects.create(
-            buyer_id='',
+            buyer_id=buyer.id,
             unique_ref=random.randint(1000, 100000)
         )
         order_item = OrderItem.objects.create(
-                order = order,
+                order=order,
                 quantity=1,
                 product_id=product_id
         )
-        return Response(status=status.HTTP_200_OK)
+        o = OrderSerializer(order, many=False)
+        return Response(o.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
 @permission_classes((AllowAny,))
 def get_cart(request):
-    order = Order.objects.filter(buyer_id='', ordered=False).first()
-    order_items = OrderItem.objects.filter(order_id=order.id)
 
-    o = OrderSerializer(order, many=False)
-    oi = OrderItemSerializer(order_items, many=True)
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    print(token)
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    order = Order.objects.filter(buyer_id=buyer.id, ordered=False).first()
 
-    context = {
-        'order': o.data,
-        'order_items': oi.data
-    }
-    return Response(context, status=status.HTTP_200_OK)
+    p = ProductSerializer(order.products, many=True)
+    return Response(p.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
