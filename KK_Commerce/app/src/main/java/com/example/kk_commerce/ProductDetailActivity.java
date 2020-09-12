@@ -87,7 +87,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
             public void onClick(View view) {
                 if (! m_token.equals("1")){
                     add_To_Cart(product_id, m_token);
-                    Toast.makeText(ProductDetailActivity.this, ""+m_token, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ProductDetailActivity.this, ""+m_token, Toast.LENGTH_LONG).show();
                 }else {
                     getDialog();
                 }
@@ -103,10 +103,6 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                 .getAsObject(Product.class, new ParsedRequestListener<Product>(){
                     @Override
                     public void onResponse(Product product) {
-                        Log.d("Images", ""+ product.getImage1());
-                        Log.d("Images", ""+ product.getImage2());
-                        Log.d("Images", ""+ product.getImage3());
-                        Log.d("Images", ""+ product.getImage4());
                         images = new ArrayList<>();
                         images.add(product.getImage1());
                         images.add(product.getImage2());
@@ -126,6 +122,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                     }
                 });
     }
+
     public void getReviews(String product_id){
         AndroidNetworking.get( BASE_URL + "product/reviews/" + product_id + "/")
                 .setTag("Product Reviews")
@@ -160,7 +157,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                 .getAsObject(Order.class, new ParsedRequestListener<Order>(){
                     @Override
                     public void onResponse(Order order) {
-                        Toast.makeText(getApplicationContext(), "Cart" + order.getProduct_count(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Item Added To Cart. Unit Count Is " + order.getProduct_count(), Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onError(ANError anError) {

@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.ItemListene
 
     @Override
     public void onItemClick(Product product) {
-        Toast.makeText(getContext(), product.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), product.getName() + " is clicked", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(getActivity(), ProductDetailActivity.class);
         i.putExtra("product_id", product.getId());
         startActivity(i);

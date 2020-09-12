@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="10dp"
         app:cardCornerRadius="2dp"
         app:cardMaxElevation="10dp"
-
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginBottom="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:id="@+id/relativeLayout">
+
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:id="@+id/img"/>
+                android:id="@+id/img"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,6 +32,7 @@
                 android:layout_toRightOf="@+id/img"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/Title"/>
 
             <TextView
@@ -63,7 +61,4 @@
                 android:layout_marginTop="10dp"
                 android:text=" Remove"/>
         </RelativeLayout>
-
-
     </androidx.cardview.widget.CardView>
-</RelativeLayout>

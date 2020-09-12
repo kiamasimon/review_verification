@@ -15,6 +15,13 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
                   'category', 'image1', 'image2', 'image3', 'image4']
 
 
+class PProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'short_description', 'description', 'unit_price', 'stock', 'low_stock',
+                  'category', 'image1', 'image2', 'image3', 'image4']
+
+
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductCategory

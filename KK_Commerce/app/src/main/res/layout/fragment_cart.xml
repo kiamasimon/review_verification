@@ -8,16 +8,18 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:fillViewport="false">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
@@ -32,9 +34,8 @@
                 android:id="@+id/add_to_cart"
                 android:paddingLeft="10dp"
                 android:drawableTint="#fff"
-                android:layout_below="@+id/recyclerView"
                 android:drawableLeft="@drawable/ic_shopping_cart" />
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
 </FrameLayout>

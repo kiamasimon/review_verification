@@ -1,6 +1,7 @@
 package com.example.kk_commerce.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.R;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.kk_commerce.Constants.BASE_URL;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
@@ -39,16 +42,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.Title);
             textPrice = (TextView) v.findViewById(R.id.Amount);
-            imageView = (ImageView) v.findViewById(R.id.imageView);
+            imageView = (ImageView) v.findViewById(R.id.img);
             relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
 
         public void setData(Product product) {
             this.product = product;
 
+            Log.d("PRODUCT", ""+product.getImage1());
+            Log.d("PRODUCT", ""+product.getImage2());
+            Log.d("PRODUCT", ""+product.getImage3());
+            Log.d("PRODUCT", ""+product.getImage4());
             textView.setText(product.getName());
             textPrice.setText("Ksh " + product.getUnit_price());
-            Glide.with(mContext).load(product.getImage1()).into(imageView);
+            Glide.with(mContext).load("http://192.168.43.168:8000" + product.getImage1()).into(imageView);
 //            relativeLayout.setBackgroundColor(Color.parseColor(item.color));
 
         }

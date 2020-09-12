@@ -99,6 +99,17 @@ class Order(models.Model):
             total_value += value
         return total_value
 
+    @property
+    def review_status(self):
+        products = self.products
+        product_ids = []
+        for product in products:
+            product_ids.append(product.id)
+        if ProductReview.objects.filter(id__in=product_ids).count() > 0:
+            return "Reviewed"
+        else:
+            return "Pending Review"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

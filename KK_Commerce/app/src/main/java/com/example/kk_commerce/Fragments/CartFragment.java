@@ -21,6 +21,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.example.kk_commerce.Adapters.CartAdapter;
 import com.example.kk_commerce.Adapters.ProductAdapter;
 import com.example.kk_commerce.Adapters.ReviewAdapter;
 import com.example.kk_commerce.Models.Product;
@@ -33,11 +34,11 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.kk_commerce.Constants.BASE_URL;
 
-public class CartFragment extends Fragment implements ProductAdapter.ItemListener {
+public class CartFragment extends Fragment implements CartAdapter.ItemListener {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
-    ProductAdapter adapter;
+    CartAdapter adapter;
     String m_token;
     AlertDialog.Builder builder;
     TextView text_username, text_password;
@@ -93,7 +94,7 @@ public class CartFragment extends Fragment implements ProductAdapter.ItemListene
                 .getAsObjectList(Product.class, new ParsedRequestListener<List<Product>>(){
                     @Override
                     public void onResponse(List<Product> products) {
-                        adapter = new ProductAdapter(getContext(), products, CartFragment.this);
+                        adapter = new CartAdapter(getContext(), products, CartFragment.this);
                         recyclerView.setAdapter(adapter);
                     }
 
@@ -131,8 +132,6 @@ public class CartFragment extends Fragment implements ProductAdapter.ItemListene
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-
     public void login(String username, String password, final DialogInterface dialogInterface){
         AndroidNetworking.post(BASE_URL + "login")
                 .addBodyParameter("consumer_key", username)

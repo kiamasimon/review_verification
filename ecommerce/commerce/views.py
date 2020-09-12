@@ -219,8 +219,9 @@ def get_cart(request):
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
     order = Order.objects.filter(buyer_id=buyer.id, ordered=False).first()
 
-    p = ProductSerializer(order.products, many=True)
-    return Response(p.data, status=status.HTTP_200_OK)
+    pp = PProductSerializer(order.products, many=True)
+    print(pp.data)
+    return Response(pp.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
