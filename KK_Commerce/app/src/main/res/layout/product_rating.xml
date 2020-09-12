@@ -44,6 +44,16 @@
             android:id="@+id/buyer"
             android:textColor="@color/secondaryDarkColor"
             android:layout_below="@+id/comment"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buyer"
+            android:layout_alignParentRight="true"
+            android:textColor="#8E8F8F"
+            android:text="Verified Review"
+            android:layout_marginRight="10dp"
+            android:id="@+id/verfied_unverified"/>
     </RelativeLayout>
 
 </RelativeLayout>

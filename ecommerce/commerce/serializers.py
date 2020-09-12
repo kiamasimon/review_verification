@@ -57,4 +57,4 @@ class ProductReviewSerializer(serializers.ModelSerializer):
     # buyer_name = serializers.SerializerMethodField()
     class Meta:
         model = ProductReview
-        fields = ['product', 'buyer', 'verified_purchase', 'comment', 'rating', 'image', 'buyer_name']
+        fields = ['product', 'buyer', 'verified_purchase', 'comment', 'rating', 'image', 'buyer_name', 'review_verified']

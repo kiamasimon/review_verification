@@ -1,6 +1,7 @@
 package com.example.kk_commerce.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView comment, buyer;
+        public TextView comment, buyer, verfied_unverified;
         public ImageView imageView;
         public RelativeLayout relativeLayout;
         public RatingBar ratingBar;
@@ -42,6 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             comment = (TextView) v.findViewById(R.id.comment);
             buyer = (TextView) v.findViewById(R.id.buyer);
             ratingBar = (RatingBar) v.findViewById(R.id.ratingBar2);
+            verfied_unverified = (TextView) v.findViewById(R.id.verfied_unverified);
 
 //            imageView = (ImageView) v.findViewById(R.id.imageView);
             relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
@@ -52,6 +54,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             comment.setText(productReview.getComment());
             buyer.setText(productReview.getBuyer_name());
             ratingBar.setRating(Float.parseFloat(productReview.getRating()));
+
+            if(productReview.getVerified_purchase().equals("1")){
+                verfied_unverified.setText("Verified Review");
+                verfied_unverified.setTextColor(Color.parseColor("#4CAF50"));
+            }else{
+                verfied_unverified.setText("Review Pending Verification");
+                verfied_unverified.setTextColor(Color.parseColor("#8E8F8F"));
+            }
 //            textView.setText(product.getName());
 //            textPrice.setText("Ksh " + product.getUnit_price());
 //            Glide.with(mContext).load(product.getImage1()).into(imageView);

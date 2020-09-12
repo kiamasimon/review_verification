@@ -24,6 +24,18 @@ public class ProductReview {
     @Expose
     private String rating;
 
+    @SerializedName("review_verified")
+    @Expose
+    private String review_verified;
+
+    public String getReview_verified() {
+        return review_verified;
+    }
+
+    public void setReview_verified(String review_verified) {
+        this.review_verified = review_verified;
+    }
+
     public String getId() {
         return id;
     }

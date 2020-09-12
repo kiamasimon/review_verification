@@ -124,6 +124,7 @@ class ProductReview(models.Model):
     comment = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(upload_to='product_review_images', null=True, blank=True)
     rating = models.DecimalField(decimal_places=1, max_digits=2)
+    review_verified = models.BooleanField(default=False)
 
     @property
     def buyer_name(self):
