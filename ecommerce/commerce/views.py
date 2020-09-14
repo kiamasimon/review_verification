@@ -305,11 +305,27 @@ def checkout(request, order_id):
     response  = lipa_na_mpesa_online(buyer=buyer, order=order)
     return response
 
-    
+
 @csrf_exempt
 def confirmation(request):
-    # confirm mpesa payment
-    print(request)
-    Payment.objects.create(
+    mpesa_body = request.body.decode('utf-8')
+    mpesa_payment = json.loads(mpesa_body)
 
+    first_name = mpesa_payment['FirstName'],
+    last_name = mpesa_payment['LastName'],
+    reference = mpesa_payment['BillRefNumber'],
+    phone_number = mpesa_payment['MSISDN'],
+    payment = Payment.objects.create(
+        first_name=first_name,
+        last_name=last_name,
+        phone_number=phone_number,
+        order_number=reference
     )
+
+    order = Order.objects.filter(unique_ref=reference).first()
+    order.payment = payment
+    order.save()
+    context = {
+        'response': 'success'
+    }
+    return Response(context, status=HTTP_200_OK)
