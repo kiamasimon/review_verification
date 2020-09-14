@@ -82,6 +82,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
     public void onItemClick(Order order) {
         Intent in = new Intent(getActivity(), OrderDetailsActivity.class);
         in.putExtra("order_id", order.getId());
+        Log.d("order_id", order.getId());
         startActivity(in);
     }
 

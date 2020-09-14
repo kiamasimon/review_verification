@@ -1,5 +1,6 @@
 import json
 import random
+from pprint import pprint
 
 import requests
 from django.contrib.auth import authenticate
@@ -28,27 +29,6 @@ def getAccessToken(request):
     mpesa_access_token = json.loads(r.text)
     validated_mpesa_access_token = mpesa_access_token['access_token']
     return HttpResponse(validated_mpesa_access_token)
-
-
-def lipa_na_mpesa_online(request):
-    access_token = MpesaAccessToken.validated_mpesa_access_token
-    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-    headers = {"Authorization": "Bearer %s" % access_token}
-    request = {
-        "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
-        "Password": LipanaMpesaPpassword.decode_password,
-        "Timestamp": LipanaMpesaPpassword.lipa_time,
-        "TransactionType": "CustomerPayBillOnline",
-        "Amount": 1,
-        "PartyA": 254728851119,  # replace with your phone number to get stk push
-        "PartyB": LipanaMpesaPpassword.Business_short_code,
-        "PhoneNumber": 254728851119,  # replace with your phone number to get stk push
-        "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-        "AccountReference": "Henry",
-        "TransactionDesc": "Testing stk push"
-    }
-    response = requests.post(api_url, json=request, headers=headers)
-    return HttpResponse('success')
 
 
 @csrf_exempt
@@ -247,5 +227,89 @@ def get_orders(request):
 @permission_classes((AllowAny,))
 def order_products(request, order_id):
     order = Order.objects.get(id=order_id)
-    p = ProductSerializer(order.products, many=True)
+    p = PProductSerializer(order.products, many=True)
+    pprint(p.data)
     return Response(p.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def mark_as_delivered(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order.delivered = True
+    order.save()
+    context = {
+        "response": "success"
+    }
+    return Response(context, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def update_profile(request):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    print(token)
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+
+    buyer.first_name = request.get("first_name", "")
+    buyer.last_name = request.get("first_name", "")
+    buyer.email = request.get("email", "")
+
+    buyer.save()
+    context = {
+        "response": "success"
+    }
+    return Response(context, status=status.HTTP_200_OK)
+
+
+def lipa_na_mpesa_online(buyer, order):
+    access_token = MpesaAccessToken.validated_mpesa_access_token
+    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    headers = {"Authorization": "Bearer %s" % access_token}
+    request = {
+        "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+        "Password": LipanaMpesaPpassword.decode_password,
+        "Timestamp": LipanaMpesaPpassword.lipa_time,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": order.total_amount,
+        "PartyA": buyer.phone_number,
+        "PartyB": LipanaMpesaPpassword.Business_short_code,
+        "PhoneNumber": buyer.phone_number,
+        "CallBackURL": "http://192.168.43.168:8000/",
+        "AccountReference": order.unique_ref,
+        "TransactionDesc": "Payment"
+    }
+    response = requests.post(api_url, json=request, headers=headers)
+    return json.loads(response.text)
+
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def change_password(request):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+
+    buyer.password = make_password(request.POST['password'])
+    buyer.save()
+    context = {
+        "response": "success"
+    }
+    return Response(context, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def checkout(request, order_id):
+    order = Order.objects.get(id=order_id)
+    buyer = order.buyer
+    response  = lipa_na_mpesa_online(buyer=buyer, order=order)
+    return response
+
+    
+@csrf_exempt
+def confirmation(request):
+    # confirm mpesa payment
+    print(request)
+    Payment.objects.create(
+
+    )

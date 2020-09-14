@@ -2,6 +2,7 @@ package com.example.kk_commerce;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,10 +39,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
     RecyclerView recyclerView;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     String order_id;
+    Toolbar toolbar;
+    TextView pageTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+        setSupportActionBar(toolbar);
+        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+//        pageTitle.setText("COMMERCE");
+        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
+        getSupportActionBar().setTitle("COMMERCE");
 
         recyclerView = findViewById(R.id.recyclerView);
         RecyclerViewLayoutManager = new LinearLayoutManager(OrderDetailsActivity.this);
@@ -54,7 +65,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
 
 
         if (! m_token.equals("1")){
-            get_data(m_token);
+            get_data(m_token, order_id);
         }else {
             getDialog();
         }
@@ -67,8 +78,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
 //        startActivity(in);
     }
 
-    public void get_data(String token){
-        AndroidNetworking.get( BASE_URL + "order/products")
+    public void get_data(String token, String order_id){
+        AndroidNetworking.get( BASE_URL + "order/products/"+order_id)
                 .setTag("Orders")
                 .addHeaders("Authorization","Token " + token)
                 .setPriority(Priority.LOW)

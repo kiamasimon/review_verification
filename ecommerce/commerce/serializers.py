@@ -43,7 +43,7 @@ class AddressSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['buyer', 'ordered', 'ordered_date', 'delivered', 'billing_address',
+        fields = ['id', 'buyer', 'ordered', 'ordered_date', 'delivered', 'billing_address',
                   'payment', 'unique_ref', 'product_count', 'total_amount', 'review_status']
 
 

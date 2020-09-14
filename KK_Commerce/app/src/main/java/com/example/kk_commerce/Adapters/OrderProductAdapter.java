@@ -16,6 +16,8 @@ import com.example.kk_commerce.R;
 
 import java.util.List;
 
+import static com.example.kk_commerce.Constants.MEDIA_BASE;
+
 public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapter.ViewHolder> {
 
     List<Product> m_products;
@@ -48,7 +50,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
 
             textView.setText(product.getName());
             textPrice.setText("Ksh " + product.getUnit_price());
-            Glide.with(mContext).load(product.getImage1()).into(imageView);
+            Glide.with(mContext).load(MEDIA_BASE + product.getImage1()).into(imageView);
 //            relativeLayout.setBackgroundColor(Color.parseColor(item.color));
 
         }
