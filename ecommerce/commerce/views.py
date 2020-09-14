@@ -246,6 +246,16 @@ def mark_as_delivered(request, order_id):
 
 @api_view(["POST"])
 @permission_classes((AllowAny,))
+def get_profile(request):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    print(token)
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    b = UserSerializer(buyer, many=False)
+    return Response(b.data, status=HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
 def update_profile(request):
     token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
     print(token)
@@ -329,3 +339,32 @@ def confirmation(request):
         'response': 'success'
     }
     return Response(context, status=HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def review_product(request, order_id, product_id):
+    product = Product.objects.get(id=product_id)
+    order = Order.objects.filter(id=order_id, delivered=True).first()
+    if order is not None:
+        token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+        buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+
+        ProductReview.objects.create(
+            product=product,
+            buyer=buyer,
+            verified_purchase=True,
+            comment=request.get("comment", ""),
+            rating=request.get("rating", "")
+        )
+
+        context = {
+            'response': 'success'
+        }
+        return Response(context, status=HTTP_200_OK)
+    else:
+        context = {
+            'response': 'Your order has not been delivered or does not exist'
+        }
+        return Response(context, status=HTTP_200_OK)
+    
