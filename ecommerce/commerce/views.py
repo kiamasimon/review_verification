@@ -141,7 +141,7 @@ class AddressViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = ProductSerializer
+    serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -235,7 +235,17 @@ def get_profile(request):
 @api_view(["GET"])
 @permission_classes((AllowAny,))
 def get_orders(request):
-    orders = Order.objects.filter(buyer_id='')
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    orders = Order.objects.filter(buyer_id=buyer.id)
     o = OrderSerializer(orders, many=True)
 
     return Response(o.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def order_products(request, order_id):
+    order = Order.objects.get(id=order_id)
+    p = ProductSerializer(order.products, many=True)
+    return Response(p.data, status=status.HTTP_200_OK)

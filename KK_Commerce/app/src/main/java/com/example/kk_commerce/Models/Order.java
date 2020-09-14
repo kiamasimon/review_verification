@@ -16,6 +16,10 @@ public class Order {
     @Expose
     private String ordered;
 
+    @SerializedName("ordered_date")
+    @Expose
+    private String ordered_date;
+
     @SerializedName("delivered")
     @Expose
     private String delivered;
@@ -39,6 +43,10 @@ public class Order {
     @SerializedName("total_amount")
     @Expose
     private String total_amount;
+
+    @SerializedName("review_status")
+    @Expose
+    private String review_status;
 
     public String getId() {
         return id;
@@ -110,5 +118,21 @@ public class Order {
 
     public void setTotal_amount(String total_amount) {
         this.total_amount = total_amount;
+    }
+
+    public String getReview_status() {
+        return review_status;
+    }
+
+    public void setReview_status(String review_status) {
+        this.review_status = review_status;
+    }
+
+    public String getOrdered_date() {
+        return ordered_date;
+    }
+
+    public void setOrdered_date(String ordered_date) {
+        this.ordered_date = ordered_date;
     }
 }

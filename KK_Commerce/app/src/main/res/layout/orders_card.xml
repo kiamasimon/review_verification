@@ -21,14 +21,16 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/primaryDarkColor"
                 android:id="@+id/label1"
-                android:text="Order"
+                android:text="Order Number"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondaryDarkColor"
-                android:layout_toEndOf="@+id/label1"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+
                 android:id="@+id/order" />
 
             <TextView
@@ -44,9 +46,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondaryDarkColor"
-                android:layout_toEndOf="@+id/label1"
                 android:layout_below="@+id/label1"
-                android:id="@+id/order_date" />
+                android:id="@+id/order_date"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,9 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondaryDarkColor"
-                android:layout_toEndOf="@+id/label3"
                 android:layout_below="@+id/label2"
-                android:id="@+id/delivery_status" />
+                android:id="@+id/delivery_status"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,9 +82,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondaryDarkColor"
-                android:layout_toEndOf="@+id/label4"
                 android:layout_below="@+id/label3"
-                android:id="@+id/review_status" />
+                android:id="@+id/review_status"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryDarkColor"
+                android:id="@+id/label5"
+                android:layout_below="@+id/label4"
+                android:text="Total Amount"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryDarkColor"
+                android:layout_below="@+id/label4"
+                android:id="@+id/total_amount"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"/>
         </RelativeLayout>
 
 

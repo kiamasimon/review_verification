@@ -44,7 +44,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['buyer', 'ordered', 'ordered_date', 'delivered', 'billing_address',
-                  'payment', 'unique_ref', 'product_count', 'total_amount']
+                  'payment', 'unique_ref', 'product_count', 'total_amount', 'review_status']
 
 
 class OrderItemSerializer(serializers.HyperlinkedModelSerializer):

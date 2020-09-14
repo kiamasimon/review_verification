@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/toolbar"
@@ -23,6 +23,15 @@
             android:layout_marginTop="10dp"
             android:scrollbars="vertical" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/delivered"
+            android:text="Mark As Delivered"
+            android:background="@drawable/button_bg"
+            android:layout_below="@+id/recyclerView"
+            android:layout_alignParentBottom="true"
+            android:textColor="#fff"/>
     </RelativeLayout>
 
 </ScrollView>
