@@ -6,8 +6,8 @@ from requests.auth import HTTPBasicAuth
 
 
 class MpesaC2bCredential:
-    consumer_key = 'cHnkwYIgBbrxlgBoneczmIJFXVm0oHky'
-    consumer_secret = '2nHEyWSD4VjpNh2g'
+    consumer_key = 'HCeBTRXbKCGhze3dldkwXPynchv6hzm3'
+    consumer_secret = 'Pk6dr1p9Yl7dYRbQ'
     api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
 
 

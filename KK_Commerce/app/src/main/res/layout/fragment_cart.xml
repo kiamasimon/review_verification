@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CartFragment">
+    tools:context=".Fragments.CartFragment"
+    android:id="@+id/fragment">
 
 
     <ScrollView
@@ -11,15 +12,30 @@
         android:layout_height="wrap_content"
         android:fillViewport="false">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cart"
+                android:textSize="25dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/primaryDarkColor"
+                android:id="@+id/cart_label"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorTextGrey"
+                android:layout_below="@+id/cart_label"
+                android:id="@+id/view_label"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/view_label"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
@@ -34,8 +50,10 @@
                 android:id="@+id/add_to_cart"
                 android:paddingLeft="10dp"
                 android:drawableTint="#fff"
-                android:drawableLeft="@drawable/ic_shopping_cart" />
-        </LinearLayout>
+                android:drawableLeft="@drawable/ic_shopping_cart"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/recyclerView"/>
+        </RelativeLayout>
     </ScrollView>
 
 </FrameLayout>

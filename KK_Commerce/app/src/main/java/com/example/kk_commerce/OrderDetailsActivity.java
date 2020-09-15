@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.example.kk_commerce.Fragments.OrdersFragment;
 import com.example.kk_commerce.Models.Order;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -41,13 +44,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
     String order_id;
     Toolbar toolbar;
     TextView pageTitle;
+    Button button;
+    Order order;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        button = findViewById(R.id.delivered);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+        relativeLayout = findViewById(R.id.relativeLayout);
         setSupportActionBar(toolbar);
         pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
 //        pageTitle.setText("COMMERCE");
@@ -63,9 +71,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
         Intent intent = getIntent();
         order_id = intent.getStringExtra("order_id");
 
-
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mark_as_delivered(m_token, order.getId());
+            }
+        });
         if (! m_token.equals("1")){
             get_data(m_token, order_id);
+            get_order(m_token, order_id);
         }else {
             getDialog();
         }
@@ -73,9 +87,16 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
 
     @Override
     public void onItemClick(Product product) {
-//        Intent in = new Intent(getActivity(), OrderDetailsActivity.class);
-//        in.putExtra("order_id", order.getId());
-//        startActivity(in);
+        if(order.getDelivered().equals("false")){
+            Snackbar sn = Snackbar.make(relativeLayout,
+                    "Cannot review this product since the order has not been delivered", Snackbar.LENGTH_LONG);
+            sn.show();
+        }else{
+            Intent in = new Intent(OrderDetailsActivity.this, ReviewActivity.class);
+            in.putExtra("product_id", product.getId());
+            in.putExtra("order_id", order.getId());
+            startActivity(in);
+        }
     }
 
     public void get_data(String token, String order_id){
@@ -98,6 +119,56 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
                 });
     }
 
+    public void get_order(String token, String order_id){
+        AndroidNetworking.get( BASE_URL + "order/"+ order_id)
+                .setTag("Order")
+                .addHeaders("Authorization","Token " + token)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObject(Order.class, new ParsedRequestListener<Order>(){
+                    @Override
+                    public void onResponse(Order m_order) {
+                        order = m_order;
+                        if (m_order.getDelivered().equals("true")){
+                            button.setVisibility(View.GONE);
+                        }else{
+                            button.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(OrderDetailsActivity.this, "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void mark_as_delivered(String token, String order_id){
+        AndroidNetworking.get( BASE_URL + "order/ordered/"+ order_id)
+                .setTag("Order")
+                .addHeaders("Authorization","Token " + token)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObject(Order.class, new ParsedRequestListener<Order>(){
+                    @Override
+                    public void onResponse(Order m_order) {
+                        order = m_order;
+                        Snackbar sn = Snackbar.make(relativeLayout,
+                                "You can now click on an individual product to leave a review and complete your order", Snackbar.LENGTH_LONG);
+                        sn.show();
+                        if (m_order.getDelivered().equals("true")){
+                            button.setVisibility(View.GONE);
+                        }else{
+                            button.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(OrderDetailsActivity.this, "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
     public void getDialog() {
         builder = new AlertDialog.Builder(OrderDetailsActivity.this);
         LayoutInflater inflater = getLayoutInflater();

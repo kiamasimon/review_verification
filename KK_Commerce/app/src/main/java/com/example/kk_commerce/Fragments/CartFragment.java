@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +25,12 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.example.kk_commerce.Adapters.CartAdapter;
 import com.example.kk_commerce.Adapters.ProductAdapter;
 import com.example.kk_commerce.Adapters.ReviewAdapter;
+import com.example.kk_commerce.Models.Order;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
 import com.example.kk_commerce.ProductDetailActivity;
 import com.example.kk_commerce.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -42,7 +45,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
     String m_token;
     AlertDialog.Builder builder;
     TextView text_username, text_password;
-
+    Button button;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -68,6 +71,8 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
         RecyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(RecyclerViewLayoutManager);
 
+        button = view.findViewById(R.id.add_to_cart);
+
         SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
         m_token = String.valueOf(preferences.getString("token", "1"));
 
@@ -76,6 +81,13 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
         }else {
             getDialog();
         }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkout(m_token);
+            }
+        });
 
         return view;
     }
@@ -96,6 +108,35 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
                     public void onResponse(List<Product> products) {
                         adapter = new CartAdapter(getContext(), products, CartFragment.this);
                         recyclerView.setAdapter(adapter);
+                        if (products.size() < 1){
+                            Snackbar sn = Snackbar.make(getView(),
+                                    "Your Cart Is Empty", Snackbar.LENGTH_LONG);
+                            sn.show();
+                            button.setVisibility(View.GONE);
+                        }else{
+                            Snackbar sn = Snackbar.make(getView(),
+                                    "Your Have " + products.size() + " Items In Your Cart", Snackbar.LENGTH_LONG);
+                            sn.show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void checkout(String token){
+        AndroidNetworking.get( BASE_URL + "checkout")
+                .setTag("Cart")
+                .addHeaders("Authorization","Token " + token)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObject(Order.class, new ParsedRequestListener<Order>(){
+                    @Override
+                    public void onResponse(Order order) {
+                        get_data(m_token);
                     }
 
                     @Override

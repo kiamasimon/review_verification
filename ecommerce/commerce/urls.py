@@ -26,13 +26,23 @@ urlpatterns = [
     path('online/lipa', views.lipa_na_mpesa_online, name='lipa_na_mpesa'),
 
     path('product/reviews/<int:product_id>/', views.product_comments),
+    path('product/review/<int:order_id>/<int:product_id>', views.get_review),
+    path('submit/rating/<int:order_id>/<int:product_id>', views.review_product),
 
     path('login', views.get_access_token),
     path('cart', views.get_cart),
     path('add/to/cart/<int:product_id>', views.add_to_cart),
 
     path('order/products/<int:order_id>', views.order_products),
+    path('order/<int:order_id>', views.get_order),
+    path('order/ordered/<int:order_id>', views.mark_as_delivered),
 
+    path('profile', views.get_profile),
     path('update/profile', views.update_profile),
     path('change/password', views.change_password),
+
+    path('checkout', views.checkout),
+
+    path('confirmation', views.confirmation),
+    path('query_mpesa', views.query_mpesa),
 ]

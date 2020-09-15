@@ -13,12 +13,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="25dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/primaryDarkColor"
+                android:id="@+id/profile_label"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorTextGrey"
+                android:layout_below="@+id/profile_label"
+                android:id="@+id/view_label"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:id="@+id/mycard"
             app:cardElevation="10dp"
+            android:layout_below="@+id/view_label"
             app:cardBackgroundColor="#fff"
             app:cardMaxElevation="10dp"
             app:cardCornerRadius="2dp">
@@ -114,6 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/label4"
+                    android:inputType="textPassword"
                     android:id="@+id/password"/>
 
                 <TextView
@@ -127,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/label5"
+                    android:inputType="textPassword"
                     android:id="@+id/confirm_password"/>
 
                 <Button

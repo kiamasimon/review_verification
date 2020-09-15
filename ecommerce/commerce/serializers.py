@@ -8,6 +8,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'username', 'email', 'first_name', 'last_name', 'phone_number', 'password']
 
 
+class UUserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Buyer
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'password']
+
+
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product

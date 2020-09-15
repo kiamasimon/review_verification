@@ -238,19 +238,17 @@ def mark_as_delivered(request, order_id):
     order = Order.objects.get(id=order_id)
     order.delivered = True
     order.save()
-    context = {
-        "response": "success"
-    }
-    return Response(context, status=status.HTTP_200_OK)
+    o = OrderSerializer(order, many=False)
+    return Response(o.data, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 @permission_classes((AllowAny,))
 def get_profile(request):
     token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
     print(token)
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
-    b = UserSerializer(buyer, many=False)
+    b = UUserSerializer(buyer, many=False)
     return Response(b.data, status=HTTP_200_OK)
 
 
@@ -261,15 +259,16 @@ def update_profile(request):
     print(token)
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
 
-    buyer.first_name = request.get("first_name", "")
-    buyer.last_name = request.get("first_name", "")
-    buyer.email = request.get("email", "")
+    buyer.first_name = request.POST["first_name"]
+    buyer.last_name = request.POST["last_name"]
+    buyer.email = request.POST['email']
 
     buyer.save()
     context = {
         "response": "success"
     }
-    return Response(context, status=status.HTTP_200_OK)
+    b = UUserSerializer(buyer, many=False)
+    return Response(b.data, status=status.HTTP_200_OK)
 
 
 def lipa_na_mpesa_online(buyer, order):
@@ -281,12 +280,12 @@ def lipa_na_mpesa_online(buyer, order):
         "Password": LipanaMpesaPpassword.decode_password,
         "Timestamp": LipanaMpesaPpassword.lipa_time,
         "TransactionType": "CustomerPayBillOnline",
-        "Amount": order.total_amount,
-        "PartyA": buyer.phone_number,
+        "Amount": 1,
+        "PartyA": 254111979693,
         "PartyB": LipanaMpesaPpassword.Business_short_code,
-        "PhoneNumber": buyer.phone_number,
-        "CallBackURL": "http://192.168.43.168:8000/",
-        "AccountReference": order.unique_ref,
+        "PhoneNumber": 254111979693,
+        "CallBackURL": "https://b9e932f378f5.ngrok.io/api/v1/confirmation",
+        "AccountReference": str(order.unique_ref),
         "TransactionDesc": "Payment"
     }
     response = requests.post(api_url, json=request, headers=headers)
@@ -304,23 +303,44 @@ def change_password(request):
     context = {
         "response": "success"
     }
-    return Response(context, status=status.HTTP_200_OK)
+    b = UUserSerializer(buyer, many=False)
+    return Response(b.data, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 @permission_classes((AllowAny,))
-def checkout(request, order_id):
-    order = Order.objects.get(id=order_id)
-    buyer = order.buyer
+def checkout(request):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    order = Order.objects.filter(buyer=buyer, ordered=False).first()
     response  = lipa_na_mpesa_online(buyer=buyer, order=order)
-    return response
+    # order.ordered = True
+    # order.save()
+    print(response)
+    return Response(response, status=status.HTTP_200_OK)
+
+
+@csrf_exempt
+def query_mpesa(request):
+    access_token = MpesaAccessToken.validated_mpesa_access_token
+    url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
+    headers = {"Authorization": "Bearer %s" % access_token}
+    body = {
+        "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+        "Password": LipanaMpesaPpassword.decode_password,
+        "Timestamp": LipanaMpesaPpassword.lipa_time,
+        "CheckoutRequestID": "ws_CO_150920201043501347"
+    }
+    response = requests.post(url=url, json=body, headers=headers)
+    print(json.loads(response.text))
+    return Response(json.loads(response.text), status=HTTP_200_OK)
 
 
 @csrf_exempt
 def confirmation(request):
     mpesa_body = request.body.decode('utf-8')
     mpesa_payment = json.loads(mpesa_body)
-
+    print(mpesa_payment)
     first_name = mpesa_payment['FirstName'],
     last_name = mpesa_payment['LastName'],
     reference = mpesa_payment['BillRefNumber'],
@@ -345,26 +365,43 @@ def confirmation(request):
 @permission_classes((AllowAny,))
 def review_product(request, order_id, product_id):
     product = Product.objects.get(id=product_id)
-    order = Order.objects.filter(id=order_id, delivered=True).first()
-    if order is not None:
-        token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
-        buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    review = ProductReview.objects.filter(product_id=product_id, order_id=order_id).first()
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
 
-        ProductReview.objects.create(
+    if review is not None:
+        review.comment = request.POST["comment"]
+        review.rating = request.POST["rating"]
+        review.save()
+        r = ProductReviewSerializer(review, many=False)
+        return Response(r.data, status=HTTP_200_OK)
+    else:
+        review = ProductReview.objects.create(
             product=product,
             buyer=buyer,
             verified_purchase=True,
-            comment=request.get("comment", ""),
-            rating=request.get("rating", "")
+            comment=request.POST["comment"],
+            rating=request.POST["rating"],
+            order_id_id=order_id
         )
+        r = ProductReviewSerializer(review, many=False)
+        return Response(r.data, status=HTTP_200_OK)
 
-        context = {
-            'response': 'success'
-        }
-        return Response(context, status=HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def get_order(request, order_id):
+    order = Order.objects.get(id=order_id)
+    o = OrderSerializer(order, many=False)
+    return Response(o.data, status=HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def get_review(request, order_id, product_id):
+    review = ProductReview.objects.filter(product_id=product_id, order_id=order_id).first()
+    if review is not None:
+        r = ProductReviewSerializer(review, many=False)
+        return Response(r.data, status=status.HTTP_200_OK)
     else:
-        context = {
-            'response': 'Your order has not been delivered or does not exist'
-        }
-        return Response(context, status=HTTP_200_OK)
-    
+        return Response("No Review Found", status=status.HTTP_200_OK)

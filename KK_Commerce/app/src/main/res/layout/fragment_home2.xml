@@ -11,10 +11,26 @@
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Catalogue"
+            android:textSize="25dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/primaryDarkColor"
+            android:id="@+id/product_label"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorTextGrey"
+            android:layout_below="@+id/product_label"
+            android:id="@+id/view_label"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/view_label"
             android:scrollbars="vertical" />
 
     </RelativeLayout>

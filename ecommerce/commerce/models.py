@@ -73,6 +73,7 @@ class Order(models.Model):
     billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     unique_ref = models.CharField(max_length=250)
+    payment_status = models.BooleanField(default=False)
 
     @property
     def product_count(self):
@@ -125,6 +126,7 @@ class ProductReview(models.Model):
     image = models.ImageField(upload_to='product_review_images', null=True, blank=True)
     rating = models.DecimalField(decimal_places=1, max_digits=2)
     review_verified = models.BooleanField(default=False)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     @property
     def buyer_name(self):
