@@ -54,13 +54,13 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         button = findViewById(R.id.delivered);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         relativeLayout = findViewById(R.id.relativeLayout);
         setSupportActionBar(toolbar);
-        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+//        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
 //        pageTitle.setText("COMMERCE");
-        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
-        getSupportActionBar().setTitle("COMMERCE");
+//        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
+//        getSupportActionBar().setTitle("COMMERCE");
 
         recyclerView = findViewById(R.id.recyclerView);
         RecyclerViewLayoutManager = new LinearLayoutManager(OrderDetailsActivity.this);

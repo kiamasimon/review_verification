@@ -12,7 +12,17 @@
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:indeterminateTint="@color/secondaryLightColor"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -20,7 +30,8 @@
                 android:text="Profile"
                 android:textSize="25dp"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/primaryDarkColor"
+                android:fontFamily="@font/baloo"
+                android:textColor="@color/primaryColor"
                 android:id="@+id/profile_label"/>
             <View
                 android:layout_width="match_parent"

@@ -15,14 +15,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:indeterminateTint="@color/secondaryLightColor"
+                android:layout_marginTop="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                tools:targetApi="lollipop" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cart"
                 android:textSize="25dp"
+                android:fontFamily="@font/baloo"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/primaryDarkColor"
+                android:textColor="@color/primaryColor"
                 android:id="@+id/cart_label"/>
             <View
                 android:layout_width="match_parent"
@@ -52,7 +66,8 @@
                 android:drawableTint="#fff"
                 android:drawableLeft="@drawable/ic_shopping_cart"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/recyclerView"/>
+                android:layout_below="@+id/recyclerView"
+                android:visibility="invisible"/>
         </RelativeLayout>
     </ScrollView>
 

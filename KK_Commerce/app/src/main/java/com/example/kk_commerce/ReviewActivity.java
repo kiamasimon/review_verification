@@ -54,10 +54,10 @@ public class ReviewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         setSupportActionBar(toolbar);
-        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
-        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
+//        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+//        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
         product_name = findViewById(R.id.product_name);
         product_price = findViewById(R.id.product_price);
         main_image = findViewById(R.id.main_image);

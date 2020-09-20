@@ -41,14 +41,14 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         setSupportActionBar(toolbar);
-        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+//        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
 //        pageTitle.setText("COMMERCE");
-        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
-//        getSupportActionBar().setTitle("COMMERCE");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_burger);
+//        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
+        getSupportActionBar().setTitle("E-COM");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_new_home);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.kk_commerce">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,16 +19,22 @@
         <activity android:name=".ReviewActivity"></activity>
         <activity android:name=".OrderDetailsActivity" />
         <activity android:name=".ProductDetailActivity" />
-        <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".DashboardActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".DashboardActivity">
+
+        </activity>
         <activity android:name=".LogInActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
     OrderAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
+    ProgressBar progressBar;
     public OrdersFragment() {
         // Required empty public constructor
     }
@@ -64,6 +66,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.simpleProgressBar);
         RecyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(RecyclerViewLayoutManager);
 
@@ -87,6 +90,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
     }
 
     public void get_data(String token){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get( BASE_URL + "orders/")
                 .setTag("Orders")
                 .addHeaders("Authorization","Token " + token)
@@ -95,12 +99,14 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
                 .getAsObjectList(Order.class, new ParsedRequestListener<List<Order>>(){
                     @Override
                     public void onResponse(List<Order> orders) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         adapter = new OrderAdapter(getContext(), orders, OrdersFragment.this);
                         recyclerView.setAdapter(adapter);
                     }
 
                     @Override
                     public void onError(ANError anError) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });

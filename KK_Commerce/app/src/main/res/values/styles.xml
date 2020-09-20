@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPink</item>
         <item name="colorAccent">@color/colorPink</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="titleTextColor">@color/colorWhiteTrans</item>
     </style>
 
     <style name="Full" parent="Theme.AppCompat.Light.NoActionBar">
@@ -80,4 +81,5 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

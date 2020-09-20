@@ -63,10 +63,10 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
         productTitle = findViewById(R.id.productTitle);
         add_to_cart = (Button) findViewById(R.id.add_to_cart);
         amount = findViewById(R.id.amount);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         setSupportActionBar(toolbar);
-        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
-        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
+//        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+//        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
 
         recyclerView2 = findViewById(R.id.recyclerView2);
         RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());

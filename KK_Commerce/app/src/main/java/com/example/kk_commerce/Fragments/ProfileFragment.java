@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class ProfileFragment extends Fragment {
     String m_token;
     AlertDialog.Builder builder;
     Button update_profile, change_password;
+    ProgressBar progressBar;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -70,6 +72,7 @@ public class ProfileFragment extends Fragment {
         email = view.findViewById(R.id.email);
         change_password = view.findViewById(R.id.change_password);
         update_profile = view.findViewById(R.id.submit);
+        progressBar = view.findViewById(R.id.simpleProgressBar);
 
         SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
         m_token = String.valueOf(preferences.getString("token", "1"));
@@ -123,6 +126,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void getData(String token){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get( BASE_URL + "profile")
                 .setTag("Cart")
                 .addHeaders("Authorization","Token " + token)
@@ -131,6 +135,7 @@ public class ProfileFragment extends Fragment {
                 .getAsObject(Buyer.class, new ParsedRequestListener<Buyer>(){
                     @Override
                     public void onResponse(Buyer buyer) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         first_name.setText(buyer.getFirst_name());
                         last_name.setText(buyer.getLast_name());
                         email.setText(buyer.getEmail());
@@ -140,12 +145,14 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
     public void changePassword(String token, String password){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.post( BASE_URL + "change/password")
                 .setTag("Cart")
                 .addHeaders("Authorization","Token " + token)
@@ -155,6 +162,7 @@ public class ProfileFragment extends Fragment {
                 .getAsObject(Buyer.class, new ParsedRequestListener<Buyer>(){
                     @Override
                     public void onResponse(Buyer buyer) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         first_name.setText(buyer.getFirst_name());
                         last_name.setText(buyer.getLast_name());
                         email.setText(buyer.getEmail());
@@ -164,12 +172,14 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
     public void updateProfile(String token, String f_name, String l_name, String e){
+        progressBar.setVisibility(View.INVISIBLE);
         AndroidNetworking.post( BASE_URL + "update/profile")
                 .setTag("Cart")
                 .addHeaders("Authorization","Token " + token)
@@ -181,6 +191,7 @@ public class ProfileFragment extends Fragment {
                 .getAsObject(Buyer.class, new ParsedRequestListener<Buyer>(){
                     @Override
                     public void onResponse(Buyer buyer) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         first_name.setText(buyer.getFirst_name());
                         last_name.setText(buyer.getLast_name());
                         email.setText(buyer.getEmail());
@@ -190,6 +201,7 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -222,6 +234,7 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
     public void login(String username, String password, final DialogInterface dialogInterface){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.post(BASE_URL + "login")
                 .addBodyParameter("consumer_key", username)
                 .addBodyParameter("consumer_password", password)
@@ -231,6 +244,7 @@ public class ProfileFragment extends Fragment {
                 .getAsObject(Token.class, new ParsedRequestListener<Token>(){
                     @Override
                     public void onResponse(Token token) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token.getToken());
@@ -240,6 +254,7 @@ public class ProfileFragment extends Fragment {
                     }
                     @Override
                     public void onError(ANError error) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Log.i("conn", ""+ error);
                         if(error.getErrorCode() == 0){
                             Toast.makeText(getContext(), "Network Error", Toast.LENGTH_LONG).show();

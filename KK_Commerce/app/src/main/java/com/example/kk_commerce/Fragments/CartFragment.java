@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
     AlertDialog.Builder builder;
     TextView text_username, text_password;
     Button button;
+    ProgressBar progressBar;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -68,6 +70,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.simpleProgressBar);
         RecyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(RecyclerViewLayoutManager);
 
@@ -98,6 +101,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
     }
 
     public void get_data(String token){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get( BASE_URL + "cart")
                 .setTag("Cart")
                 .addHeaders("Authorization","Token " + token)
@@ -106,6 +110,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
                 .getAsObjectList(Product.class, new ParsedRequestListener<List<Product>>(){
                     @Override
                     public void onResponse(List<Product> products) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         adapter = new CartAdapter(getContext(), products, CartFragment.this);
                         recyclerView.setAdapter(adapter);
                         if (products.size() < 1){
@@ -114,6 +119,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
                             sn.show();
                             button.setVisibility(View.GONE);
                         }else{
+                            button.setVisibility(View.INVISIBLE);
                             Snackbar sn = Snackbar.make(getView(),
                                     "Your Have " + products.size() + " Items In Your Cart", Snackbar.LENGTH_LONG);
                             sn.show();
@@ -122,6 +128,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
 
                     @Override
                     public void onError(ANError anError) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 });

@@ -1,30 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity"
-    android:background="@drawable/bg">
+    android:orientation="vertical"
+    android:background="#1f1f1d">
 
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/o_primaryDarkColor"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_marginTop="@dimen/space56"
-        android:layout_centerHorizontal="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space16"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Shop At Your Own Convenience"
-        android:textSize="@dimen/h2"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/Regular"/>
-</RelativeLayout>
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:background="@drawable/white_line"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/first_line"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="100dp"
+            android:background="@drawable/red_line"
+            android:id="@+id/second_line"
+            android:layout_toRightOf="@+id/first_line"
+            android:layout_marginLeft="8dp"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="250dp"
+            android:background="@drawable/white_line"
+            android:id="@+id/third_line"
+            android:layout_toRightOf="@+id/second_line"
+            android:layout_marginLeft="8dp"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="200dp"
+            android:background="@drawable/red_line"
+            android:id="@+id/fourth_line"
+            android:layout_toRightOf="@+id/third_line"
+            android:layout_marginLeft="8dp"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="220dp"
+            android:background="@drawable/green_line"
+            android:id="@+id/fifth_line"
+            android:layout_toRightOf="@+id/fourth_line"
+            android:layout_marginLeft="8dp"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="150dp"
+            android:background="@drawable/white_line"
+            android:id="@+id/sixth_line"
+            android:layout_toRightOf="@+id/fifth_line"
+            android:layout_marginLeft="8dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/baloo"
+            android:text="E-COM"
+            android:id="@+id/logo"
+            android:textColor="#fff"
+            android:textSize="100sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
+                android:fontFamily="cursive"
+                android:text="Android E-Commerce"
+                android:id="@+id/tagLine"
+                android:textColor="#8A8585"
+                android:textSize="24sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
