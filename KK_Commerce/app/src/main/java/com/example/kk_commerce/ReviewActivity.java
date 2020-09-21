@@ -47,6 +47,7 @@ public class ReviewActivity extends AppCompatActivity {
     TextInputEditText editText;
     Button button;
     RelativeLayout relativeLayout;
+    TextView register;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +168,15 @@ public class ReviewActivity extends AppCompatActivity {
         View mView = inflater.inflate(R.layout.dialog_signin, null);
         text_username = mView.findViewById(R.id.username);
         text_password = mView.findViewById(R.id.password);
+        register = mView.findViewById(R.id.register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ReviewActivity.this, RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
 
         builder.setView(mView)
                 // Add action buttons

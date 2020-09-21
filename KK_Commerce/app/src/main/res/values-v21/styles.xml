@@ -10,4 +10,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPink</item>
+        <item name="colorPrimaryDark">@color/colorPink</item>
+        <item name="colorAccent">@color/colorPink</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="titleTextColor">@color/colorWhiteTrans</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 </resources>

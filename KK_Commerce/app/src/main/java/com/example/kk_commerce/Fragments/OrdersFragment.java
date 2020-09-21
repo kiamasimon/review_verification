@@ -29,6 +29,7 @@ import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
 import com.example.kk_commerce.OrderDetailsActivity;
 import com.example.kk_commerce.R;
+import com.example.kk_commerce.RegistrationActivity;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
     RecyclerView recyclerView;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     ProgressBar progressBar;
+    TextView register;
     public OrdersFragment() {
         // Required empty public constructor
     }
@@ -119,6 +121,15 @@ public class OrdersFragment extends Fragment implements OrderAdapter.ItemListene
         View mView = inflater.inflate(R.layout.dialog_signin, null);
         text_username = mView.findViewById(R.id.username);
         text_password = mView.findViewById(R.id.password);
+        register = mView.findViewById(R.id.register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getActivity(), RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
 
         builder.setView(mView)
                 // Add action buttons

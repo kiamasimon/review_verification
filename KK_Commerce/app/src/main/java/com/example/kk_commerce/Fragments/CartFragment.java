@@ -31,6 +31,7 @@ import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
 import com.example.kk_commerce.ProductDetailActivity;
 import com.example.kk_commerce.R;
+import com.example.kk_commerce.RegistrationActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
     TextView text_username, text_password;
     Button button;
     ProgressBar progressBar;
+    TextView register;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -160,6 +162,15 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
         View mView = inflater.inflate(R.layout.dialog_signin, null);
         text_username = mView.findViewById(R.id.username);
         text_password = mView.findViewById(R.id.password);
+        register = mView.findViewById(R.id.register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getActivity(), RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
 
         builder.setView(mView)
                 // Add action buttons

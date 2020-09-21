@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -17,11 +20,20 @@ import com.example.kk_commerce.Models.ResponseMessage;
 import static com.example.kk_commerce.Constants.BASE_URL;
 
 public class LogInActivity extends AppCompatActivity {
-
+    Button signUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        signUp = findViewById(R.id.signup);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(LogInActivity.this, RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
     }
 
     public void SignIn(String username, String password){

@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,12 +45,12 @@ public class DashboardActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         setSupportActionBar(toolbar);
-//        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
-//        pageTitle.setText("COMMERCE");
-//        pageTitle.setTextColor(getResources().getColor(R.color.primaryDarkColor));
-        getSupportActionBar().setTitle("E-COM");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_new_home);
+        pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
+        pageTitle.setText("E-COM");
+        pageTitle.setTextColor(getResources().getColor(R.color.colorWhiteTrans));
+//        getSupportActionBar().setTitle("E-COM");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_new_home);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

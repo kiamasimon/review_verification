@@ -86,7 +86,7 @@
         android:id="@+id/slogan_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In to continue"
+        android:text="Sign Up to continue"
         android:textSize="18sp"
         android:layout_marginLeft="20dp"
         android:textColor="@color/colorWhiteTrans"
@@ -103,31 +103,82 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="Username/Email"
             app:hintTextColor="#990033"
             android:textColorHint="@color/colorWhiteTrans">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#990033"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
                 android:id="@+id/username"
-                android:backgroundTint="#990033" />
+                android:textColor="#fff"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="First Name"
             app:hintTextColor="#990033"
+            android:textColorHint="@color/colorWhiteTrans">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/first_name"
+                android:backgroundTint="#990033"
+                android:textColor="#fff"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            app:hintTextColor="#990033"
+            android:textColorHint="@color/colorWhiteTrans">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/last_name"
+                android:backgroundTint="#990033"
+                android:textColor="#fff"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColorHint="@color/colorWhiteTrans"
             android:hint="Password"
+            app:hintTextColor="#990033"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:inputType="textPassword"
                 android:backgroundTint="#990033"
-                android:id="@+id/password"
-                android:inputType="textPassword"/>
+                android:id="@+id/password"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorWhiteTrans"
+            android:hint="Confirm Password"
+            app:hintTextColor="#990033"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:inputType="textPassword"
+                android:backgroundTint="#990033"
+                android:id="@+id/confirm_password"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -154,10 +205,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="5dp"
-            android:id="@+id/signup"
+            android:id="@+id/signin"
             android:background="#00000000"
             android:elevation="0dp"
-            android:text="New User? SIGN UP"
+            android:text="Have an account? SIGN IN"
             android:textColor="@color/colorWhiteTrans"/>
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.kk_commerce.Fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import com.example.kk_commerce.Models.Buyer;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
 import com.example.kk_commerce.R;
+import com.example.kk_commerce.RegistrationActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class ProfileFragment extends Fragment {
     AlertDialog.Builder builder;
     Button update_profile, change_password;
     ProgressBar progressBar;
+    TextView register;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -213,6 +216,15 @@ public class ProfileFragment extends Fragment {
         View mView = inflater.inflate(R.layout.dialog_signin, null);
         text_username = mView.findViewById(R.id.username);
         text_password = mView.findViewById(R.id.password);
+        register = mView.findViewById(R.id.register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getActivity(), RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
 
         builder.setView(mView)
                 // Add action buttons

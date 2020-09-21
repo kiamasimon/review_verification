@@ -47,6 +47,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
     Button button;
     Order order;
     RelativeLayout relativeLayout;
+    TextView register;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +177,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderProd
         View mView = inflater.inflate(R.layout.dialog_signin, null);
         text_username = mView.findViewById(R.id.username);
         text_password = mView.findViewById(R.id.password);
+        register = mView.findViewById(R.id.register);
 
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(OrderDetailsActivity.this, RegistrationActivity.class);
+                startActivity(in);
+            }
+        });
         builder.setView(mView)
                 // Add action buttons
                 .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {

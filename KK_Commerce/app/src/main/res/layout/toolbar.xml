@@ -8,7 +8,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/baloo"
+            android:textSize="@dimen/h1"
+            style="@style/Regular"/>
+
         <RelativeLayout
             android:layout_width="150dp"
             android:layout_alignParentEnd="true"
