@@ -59,6 +59,12 @@ class OrderItemSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'order', 'product', 'quantity']
 
 
+class OOrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['order', 'product', 'quantity']
+
+
 class ProductReviewSerializer(serializers.ModelSerializer):
     # buyer_name = serializers.SerializerMethodField()
     class Meta:

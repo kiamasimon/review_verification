@@ -28,6 +28,7 @@ import com.example.kk_commerce.Adapters.ProductImagesAdapter;
 import com.example.kk_commerce.Adapters.ReviewAdapter;
 import com.example.kk_commerce.Fragments.HomeFragment;
 import com.example.kk_commerce.Models.Order;
+import com.example.kk_commerce.Models.OrderItem;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.ProductReview;
 import com.example.kk_commerce.Models.Token;
@@ -154,10 +155,10 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                 .addHeaders("Authorization","Token " + token)
                 .setPriority(Priority.LOW)
                 .build()
-                .getAsObject(Order.class, new ParsedRequestListener<Order>(){
+                .getAsObject(OrderItem.class, new ParsedRequestListener<OrderItem>(){
                     @Override
-                    public void onResponse(Order order) {
-                        Toast.makeText(getApplicationContext(), "Item Added To Cart. Unit Count Is " + order.getProduct_count(), Toast.LENGTH_LONG).show();
+                    public void onResponse(OrderItem orderItem) {
+                        Toast.makeText(getApplicationContext(), "Item Added To Cart. Unit Count Is " + orderItem.getQuantity(), Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onError(ANError anError) {

@@ -63,11 +63,10 @@ def get_access_token(request):
 def buyer_sign_up(request):
     username = request.data.get("username", "")
     password = request.data.get("password", "")
-    email = request.data.get("email", "")
     first_name = request.data.get("first_name", "")
     last_name = request.data.get("last_name", "")
     phone_number = request.data.get("phone_number", "")
-    if not username and not password and not email and not first_name and not last_name:
+    if not username and not password and not first_name and not last_name:
         return Response(
             data={
                 "response": "username, password and email is required to register a user"
@@ -77,15 +76,16 @@ def buyer_sign_up(request):
     buyer = Buyer.objects.create(
         username=username,
         password=make_password(password),
-        email=email,
+        email=username,
         first_name=first_name,
         last_name=last_name,
         is_staff=True,
         phone_number=phone_number
     )
+    user = authenticate(username=username, password=password)
+    token, _ = Token.objects.get_or_create(user=user)
     context = {
-        'response': 'User Created Successfully',
-        'buyer': buyer
+        'token': token.key
     }
     return Response(context, status=status.HTTP_201_CREATED)
 
@@ -166,15 +166,15 @@ def add_to_cart(request, product_id):
             new_quantity = old_quantity + 1
             order_item.quantity = new_quantity
             order_item.save()
-            o = OrderSerializer(order, many=False)
+            o = OOrderItemSerializer(order_item, many=False)
             return Response(o.data, status=status.HTTP_200_OK)
         else:
-            OrderItem.objects.create(
-                order = order,
+            order_item = OrderItem.objects.create(
+                order=order,
                 quantity=1,
                 product_id=product_id
             )
-            o = OrderSerializer(order, many=False)
+            o = OOrderItemSerializer(order_item, many=False)
             return Response(o.data, status=status.HTTP_200_OK)
     else:
         order = Order.objects.create(
@@ -186,7 +186,7 @@ def add_to_cart(request, product_id):
                 quantity=1,
                 product_id=product_id
         )
-        o = OrderSerializer(order, many=False)
+        o = OOrderItemSerializer(order_item, many=False)
         return Response(o.data, status=status.HTTP_200_OK)
 
 
@@ -198,10 +198,13 @@ def get_cart(request):
     print(token)
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
     order = Order.objects.filter(buyer_id=buyer.id, ordered=False).first()
-
-    pp = PProductSerializer(order.products, many=True)
-    print(pp.data)
-    return Response(pp.data, status=status.HTTP_200_OK)
+    if order is not None:
+        pp = PProductSerializer(order.products, many=True)
+        print(pp.data)
+        return Response(pp.data, status=status.HTTP_200_OK)
+    else:
+        products = []
+        return Response(products, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -405,3 +408,37 @@ def get_review(request, order_id, product_id):
         return Response(r.data, status=status.HTTP_200_OK)
     else:
         return Response("No Review Found", status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def get_order_review_status(request, order_id):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    order = Order.objects.get(id=order_id)
+    products = order.products
+    product_ids = []
+    for product in products:
+        product_ids.append(product.id)
+    if ProductReview.objects.filter(id__in=product_ids, buyer=buyer).count() > 0:
+        context = {
+            "response": "Reviewed"
+        }
+        return Response(context, status=HTTP_200_OK)
+    else:
+        context = {
+            'response': "Pending Review"
+        }
+        return Response(context, HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def get_in_cart(request, product_id):
+    token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
+    buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
+    order = Order.objects.filter(buyer=buyer, ordered=False).first()
+    order_item = OrderItem.objects.filter(order_id=order.id, product_id=product_id).first()
+
+    o = OOrderItemSerializer(order_item, many=False)
+    return Response(o.data, status=HTTP_200_OK)

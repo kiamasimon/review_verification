@@ -30,12 +30,14 @@ urlpatterns = [
     path('submit/rating/<int:order_id>/<int:product_id>', views.review_product),
 
     path('login', views.get_access_token),
+    path('sign/up', views.buyer_sign_up),
     path('cart', views.get_cart),
     path('add/to/cart/<int:product_id>', views.add_to_cart),
 
     path('order/products/<int:order_id>', views.order_products),
     path('order/<int:order_id>', views.get_order),
     path('order/ordered/<int:order_id>', views.mark_as_delivered),
+    path('order/review/status/<int:order_id>', views.get_order_review_status),
 
     path('profile', views.get_profile),
     path('update/profile', views.update_profile),
@@ -43,6 +45,7 @@ urlpatterns = [
 
     path('checkout', views.checkout),
 
+    path('get/value/in/cart/<int:product_id>', views.get_in_cart),
     path('confirmation', views.confirmation),
     path('query_mpesa', views.query_mpesa),
 ]

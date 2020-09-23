@@ -1,6 +1,7 @@
 package com.example.kk_commerce.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bumptech.glide.Glide;
+import com.example.kk_commerce.Fragments.CartFragment;
+import com.example.kk_commerce.Models.Order;
+import com.example.kk_commerce.Models.OrderItem;
 import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.R;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.kk_commerce.Constants.BASE_URL;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
@@ -32,7 +45,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView, textPrice;
+        public TextView textView, textPrice, txtItemCount;
         public ImageView imageView;
         public RelativeLayout relativeLayout;
         Product product;
@@ -44,6 +57,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             textPrice = (TextView) v.findViewById(R.id.Amount);
             imageView = (ImageView) v.findViewById(R.id.img);
             relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
+            txtItemCount = v.findViewById(R.id.itemCount);
         }
 
         public void setData(Product product) {
@@ -57,6 +71,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             textPrice.setText("Ksh " + product.getUnit_price());
             Glide.with(mContext).load("http://192.168.43.168:8000" + product.getImage1()).into(imageView);
 //            relativeLayout.setBackgroundColor(Color.parseColor(item.color));
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences("User", MODE_PRIVATE);
+            String mtoken = String.valueOf(sharedPreferences.getString("token", "1"));
+
+            AndroidNetworking.get( BASE_URL + "get/value/in/cart/" + product.getId())
+                    .setTag("Cart")
+                    .addHeaders("Authorization","Token " + mtoken)
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsObject(OrderItem.class, new ParsedRequestListener<OrderItem>(){
+                        @Override
+                        public void onResponse(OrderItem orderItem) {
+                            txtItemCount.setText("Item Count: " + orderItem.getQuantity());
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            Toast.makeText(mContext, "" + anError.getErrorBody() + anError.getMessage() + anError.getResponse(), Toast.LENGTH_LONG).show();
+                        }
+                    });
 
         }
 

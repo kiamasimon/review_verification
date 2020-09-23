@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#1f1f1d">
+    android:background="#1f1f1d"
+    android:id="@+id/linearLayout">
     <RelativeLayout
         android:layout_width="150dp"
         android:layout_gravity="right"
@@ -147,7 +148,8 @@
             android:background="#990033"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:id="@+id/btnLogin"/>
 
         <Button
             android:layout_width="match_parent"

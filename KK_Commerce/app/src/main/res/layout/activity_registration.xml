@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#1f1f1d">
+    android:background="#1f1f1d"
+    android:id="@+id/linearLayout">
     <RelativeLayout
         android:layout_width="150dp"
         android:layout_gravity="right"
@@ -150,6 +151,21 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            app:hintTextColor="#990033"
+            android:textColorHint="@color/colorWhiteTrans">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone_number"
+                android:backgroundTint="#990033"
+                android:textColor="#fff"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColorHint="@color/colorWhiteTrans"
             android:hint="Password"
             app:hintTextColor="#990033"
@@ -198,7 +214,8 @@
             android:background="#990033"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:id="@+id/btnSignUp"/>
 
         <Button
             android:layout_width="match_parent"

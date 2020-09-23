@@ -121,7 +121,7 @@ public class CartFragment extends Fragment implements CartAdapter.ItemListener {
                             sn.show();
                             button.setVisibility(View.GONE);
                         }else{
-                            button.setVisibility(View.INVISIBLE);
+                            button.setVisibility(View.VISIBLE);
                             Snackbar sn = Snackbar.make(getView(),
                                     "Your Have " + products.size() + " Items In Your Cart", Snackbar.LENGTH_LONG);
                             sn.show();

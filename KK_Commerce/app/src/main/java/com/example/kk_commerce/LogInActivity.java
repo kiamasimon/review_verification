@@ -2,13 +2,17 @@ package com.example.kk_commerce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -16,17 +20,27 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.example.kk_commerce.Models.Buyer;
 import com.example.kk_commerce.Models.ResponseMessage;
+import com.example.kk_commerce.Models.Token;
+import com.google.android.material.snackbar.Snackbar;
 
 import static com.example.kk_commerce.Constants.BASE_URL;
 
 public class LogInActivity extends AppCompatActivity {
-    Button signUp;
+    Button signUp, btnLogin;
+    String m_token;
+    TextView txtUsername, txtPassword;
+    LinearLayout linearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        txtPassword = findViewById(R.id.password);
+        txtUsername = findViewById(R.id.username);
         signUp = findViewById(R.id.signup);
+        btnLogin = findViewById(R.id.btnLogin);
+        linearLayout = findViewById(R.id.linearLayout);
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,29 +48,56 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = txtUsername.getText().toString().trim();
+                String password = txtPassword.getText().toString().trim();
+
+                if(!username.equals("") && !password.equals("")){
+                    login(username, password);
+                }else if(!username.equals("")){
+                    Snackbar sn = Snackbar.make(linearLayout, "Username Required", Snackbar.LENGTH_LONG);
+                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setBackgroundTint(Color.parseColor("#990033"));
+                    sn.show();
+                }else if(!password.equals("")){
+                    Snackbar sn = Snackbar.make(linearLayout, "Password Required", Snackbar.LENGTH_LONG);
+                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setBackgroundTint(Color.parseColor("#990033"));
+                    sn.show();
+                }else{
+                    Snackbar sn = Snackbar.make(linearLayout, "Username and Password Required", Snackbar.LENGTH_LONG);
+                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setBackgroundTint(Color.parseColor("#990033"));
+                    sn.show();
+                }
+            }
+        });
     }
 
-    public void SignIn(String username, String password){
-        AndroidNetworking.post(BASE_URL + "/signin")
-                .addBodyParameter("username", username).addBodyParameter("password", password)
-                .setTag("test").setPriority(Priority.MEDIUM).build()
-                .getAsObject(Buyer.class, new ParsedRequestListener<Buyer>(){
+    public void login(String username, String password){
+        AndroidNetworking.post(BASE_URL + "login")
+                .addBodyParameter("consumer_key", username)
+                .addBodyParameter("consumer_password", password)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsObject(Token.class, new ParsedRequestListener<Token>(){
                     @Override
-                    public void onResponse(Buyer buyer) {
-                        ResponseMessage response = buyer.getResponse();
-                        if (response.getMessage().equals("Login Successful")){
-                            Log.i("conn", ""+buyer.getId());
-                            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                            SharedPreferences preferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putInt("Buyer", Integer.parseInt(buyer.getId()));
-                            editor.apply();
-                            intent.putExtra("name", buyer.getFirst_name());
-                            Toast.makeText(LogInActivity.this, "Welcome", Toast.LENGTH_LONG).show();
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(LogInActivity.this, ""+ response.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                    public void onResponse(Token token) {
+                        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("token", token.getToken());
+                        editor.apply();
+                        m_token = token.getToken();
+                        Snackbar sn = Snackbar.make(linearLayout, "Login Successful", Snackbar.LENGTH_LONG);
+                        sn.setTextColor(Color.parseColor("#fffff"));
+                        sn.setBackgroundTint(Color.parseColor("#990033"));
+                        sn.show();
+                        Intent in = new Intent(LogInActivity.this, DashboardActivity.class);
+                        startActivity(in);
                     }
                     @Override
                     public void onError(ANError error) {

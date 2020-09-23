@@ -33,6 +33,10 @@ class Product(models.Model):
     image3 = models.ImageField(upload_to='product_images')
     image4 = models.ImageField(upload_to='product_images')
 
+    def in_cart(self, buyer):
+        order = Order.objects.filter(buyer=buyer, ordered=False).first()
+        order_item = OrderItem.objects.filter(order_id=order.id, product_id=self.id).first()
+        return order_item.quantity
 
 # class ProductVariant(models.Model):
 #     product = models.ForeignKey(Product, on_delete=models.CASCADE)
