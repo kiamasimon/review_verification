@@ -27,7 +27,7 @@ public class RegistrationActivity extends AppCompatActivity {
     TextInputEditText txtPassword, txtConfirmPassword, txtFisrtName, txtLastName, txtUsername, txtPhoneNumber;
     Button signUpBtn, signIn;
     LinearLayout linearLayout;
-    ProgressBar progressBar;
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
         signUpBtn = findViewById(R.id.btnSignUp);
         txtPhoneNumber = findViewById(R.id.phone_number);
         linearLayout = findViewById(R.id.linearLayout);
-        progressBar = findViewById(R.id.simpleProgressBar);
+        loadingDialog = new LoadingDialog(RegistrationActivity.this);
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void SignUp(String username, String password, String first_name, String last_name, String phone_number){
-        progressBar.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
         AndroidNetworking.post(BASE_URL + "sign/up")
                 .addBodyParameter("username", username)
                 .addBodyParameter("password", password)
@@ -106,7 +106,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .getAsObject(Token.class, new ParsedRequestListener<Token>(){
                     @Override
                     public void onResponse(Token token) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingDialog.dismissDialog();
                         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token.getToken());
@@ -117,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onError(ANError error) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingDialog.dismissDialog();
                         Log.i("conn", ""+ error);
                         if(error.getErrorCode() == 0){
                             Toast.makeText(RegistrationActivity.this, "Network Error", Toast.LENGTH_LONG).show();

@@ -122,7 +122,8 @@
                 android:id="@+id/username"
                 android:backgroundTint="#990033"
                 android:cursorVisible="true"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textColor="#fff"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -140,7 +141,8 @@
                 android:id="@+id/password"
                 android:inputType="textPassword"
                 android:cursorVisible="true"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textColor="#fff"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

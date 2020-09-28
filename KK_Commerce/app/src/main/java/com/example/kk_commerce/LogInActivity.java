@@ -31,7 +31,7 @@ public class LogInActivity extends AppCompatActivity {
     String m_token;
     TextView txtUsername, txtPassword;
     LinearLayout linearLayout;
-    ProgressBar progressBar;
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class LogInActivity extends AppCompatActivity {
         signUp = findViewById(R.id.signup);
         btnLogin = findViewById(R.id.btnLogin);
         linearLayout = findViewById(R.id.linearLayout);
-        progressBar = findViewById(R.id.simpleProgressBar);
+        loadingDialog = new LoadingDialog(LogInActivity.this);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +81,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void login(String username, String password){
-        progressBar.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
         AndroidNetworking.post(BASE_URL + "login")
                 .addBodyParameter("consumer_key", username)
                 .addBodyParameter("consumer_password", password)
@@ -91,7 +91,7 @@ public class LogInActivity extends AppCompatActivity {
                 .getAsObject(Token.class, new ParsedRequestListener<Token>(){
                     @Override
                     public void onResponse(Token token) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingDialog.dismissDialog();
                         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token.getToken());
@@ -106,7 +106,7 @@ public class LogInActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onError(ANError error) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingDialog.dismissDialog();
                         Log.i("conn", ""+ error);
                         if(error.getErrorCode() == 0){
                             Toast.makeText(LogInActivity.this, "Network Error", Toast.LENGTH_LONG).show();
