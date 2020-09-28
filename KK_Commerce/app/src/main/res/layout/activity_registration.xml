@@ -134,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/first_name"
                     android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:backgroundTint="#990033"
                     android:textColor="#fff"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -151,6 +152,7 @@
                     android:id="@+id/last_name"
                     android:backgroundTint="#990033"
                     android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:textColor="#fff"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_number"
                     android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:backgroundTint="#990033"
                     android:textColor="#fff"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -185,6 +188,7 @@
                     android:inputType="textPassword"
                     android:backgroundTint="#990033"
                     android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:id="@+id/password"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -201,6 +205,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#fff"
                     android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:inputType="textPassword"
                     android:backgroundTint="#990033"
                     android:id="@+id/confirm_password"/>
