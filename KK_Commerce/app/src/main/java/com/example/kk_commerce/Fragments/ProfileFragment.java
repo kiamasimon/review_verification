@@ -28,6 +28,7 @@ import com.example.kk_commerce.Models.Product;
 import com.example.kk_commerce.Models.Token;
 import com.example.kk_commerce.R;
 import com.example.kk_commerce.RegistrationActivity;
+import com.example.kk_commerce.SplashScreenActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -38,7 +39,7 @@ import static com.example.kk_commerce.Constants.BASE_URL;
 
 public class ProfileFragment extends Fragment {
     EditText first_name, last_name, email, password1, password2;
-    TextView text_username, text_password;
+    TextView text_username, text_password, logout;
     String m_token;
     AlertDialog.Builder builder;
     Button update_profile, change_password;
@@ -76,6 +77,7 @@ public class ProfileFragment extends Fragment {
         change_password = view.findViewById(R.id.change_password);
         update_profile = view.findViewById(R.id.submit);
         progressBar = view.findViewById(R.id.simpleProgressBar);
+        logout = view.findViewById(R.id.logout);
 
         SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
         m_token = String.valueOf(preferences.getString("token", "1"));
@@ -86,6 +88,19 @@ public class ProfileFragment extends Fragment {
             getDialog();
         }
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.INVISIBLE);
+                SharedPreferences preferences = getContext().getSharedPreferences("User", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("token", "1");
+                editor.apply();
+                Toast.makeText(getContext(), "Logged Out", Toast.LENGTH_LONG).show();
+                Intent in = new Intent(getContext(), SplashScreenActivity.class);
+                startActivity(in);
+            }
+        });
         change_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

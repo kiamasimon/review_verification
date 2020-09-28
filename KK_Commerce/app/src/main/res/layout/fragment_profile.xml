@@ -169,6 +169,15 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LogOut"
+            android:id="@+id/logout"
+            android:layout_below="@+id/card2"
+            android:fontFamily="@font/baloo"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"/>
         </RelativeLayout>
     </ScrollView>
 

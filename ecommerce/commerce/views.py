@@ -5,8 +5,9 @@ from pprint import pprint
 import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
 from rest_framework import viewsets, permissions, status
@@ -19,6 +20,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 from commerce.models import *
 from commerce.mpesa_credentials import MpesaAccessToken, LipanaMpesaPpassword
 from commerce.serializers import *
+from commerce.utils import SentimentAnalyzer
 
 
 def getAccessToken(request):
@@ -442,3 +444,10 @@ def get_in_cart(request, product_id):
 
     o = OOrderItemSerializer(order_item, many=False)
     return Response(o.data, status=HTTP_200_OK)
+
+
+@csrf_exempt
+def test_sentiment_analyzer(request):
+    response = SentimentAnalyzer()
+    print(response)
+    return JsonResponse(response)

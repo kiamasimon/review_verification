@@ -81,7 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     sn.show();
                 }else{
                     Snackbar sn = Snackbar.make(linearLayout, "All Fields Are Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }

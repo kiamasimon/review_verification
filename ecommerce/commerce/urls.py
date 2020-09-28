@@ -48,4 +48,8 @@ urlpatterns = [
     path('get/value/in/cart/<int:product_id>', views.get_in_cart),
     path('confirmation', views.confirmation),
     path('query_mpesa', views.query_mpesa),
+
+
+    #test
+    path('test_sentiment_analyzer', views.test_sentiment_analyzer)
 ]
