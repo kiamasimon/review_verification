@@ -13,7 +13,7 @@ def extract_features(words):
     return dict([(word, True) for word in words])
 
 
-# nltk.download('movie_reviews')
+nltk.download('movie_reviews')
 # nltk.download('product_reviews_2')
 
 def SentimentAnalyzer():

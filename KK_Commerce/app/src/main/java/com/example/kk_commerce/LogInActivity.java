@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
@@ -30,6 +31,7 @@ public class LogInActivity extends AppCompatActivity {
     String m_token;
     TextView txtUsername, txtPassword;
     LinearLayout linearLayout;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class LogInActivity extends AppCompatActivity {
         signUp = findViewById(R.id.signup);
         btnLogin = findViewById(R.id.btnLogin);
         linearLayout = findViewById(R.id.linearLayout);
+        progressBar = findViewById(R.id.simpleProgressBar);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +81,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void login(String username, String password){
+        progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.post(BASE_URL + "login")
                 .addBodyParameter("consumer_key", username)
                 .addBodyParameter("consumer_password", password)
@@ -87,6 +91,7 @@ public class LogInActivity extends AppCompatActivity {
                 .getAsObject(Token.class, new ParsedRequestListener<Token>(){
                     @Override
                     public void onResponse(Token token) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token.getToken());
@@ -101,6 +106,7 @@ public class LogInActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onError(ANError error) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Log.i("conn", ""+ error);
                         if(error.getErrorCode() == 0){
                             Toast.makeText(LogInActivity.this, "Network Error", Toast.LENGTH_LONG).show();
