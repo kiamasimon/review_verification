@@ -9,6 +9,9 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="titleTextColor">@color/colorWhiteTrans</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="colorControlNormal">#990033</item>
+        <item name="colorControlActivated">#990033</item>
+        <item name="colorControlHighlight">#990033</item>
     </style>
 
     <style name="Full" parent="Theme.AppCompat.Light.NoActionBar">
