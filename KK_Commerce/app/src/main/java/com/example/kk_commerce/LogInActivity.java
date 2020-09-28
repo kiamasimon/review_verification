@@ -59,17 +59,17 @@ public class LogInActivity extends AppCompatActivity {
                     login(username, password);
                 }else if(!username.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Username Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }else if(!password.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Password Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }else{
                     Snackbar sn = Snackbar.make(linearLayout, "Username and Password Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }
@@ -93,7 +93,7 @@ public class LogInActivity extends AppCompatActivity {
                         editor.apply();
                         m_token = token.getToken();
                         Snackbar sn = Snackbar.make(linearLayout, "Login Successful", Snackbar.LENGTH_LONG);
-                        sn.setTextColor(Color.parseColor("#fffff"));
+                        sn.setTextColor(Color.parseColor("#ffffff"));
                         sn.setBackgroundTint(Color.parseColor("#990033"));
                         sn.show();
                         Intent in = new Intent(LogInActivity.this, DashboardActivity.class);

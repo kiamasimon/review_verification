@@ -63,7 +63,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         && !confirm_password.equals("") && !phone_number.equals("")){
                     if(!password.equals(confirm_password)){
                         Snackbar sn = Snackbar.make(linearLayout, "Passwords Do Not Match", Snackbar.LENGTH_LONG);
-                        sn.setTextColor(Color.parseColor("#fffff"));
+                        sn.setTextColor(Color.parseColor("#ffffff"));
                         sn.setBackgroundTint(Color.parseColor("#990033"));
                         sn.show();
                     }else{
@@ -71,12 +71,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 }else if(!username.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Username Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }else if(!password.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Password Required", Snackbar.LENGTH_LONG);
-                    sn.setTextColor(Color.parseColor("#fffff"));
+                    sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
                 }else{
