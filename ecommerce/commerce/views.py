@@ -1,5 +1,6 @@
 import json
 import random
+from datetime import datetime
 from pprint import pprint
 
 import requests
@@ -319,9 +320,19 @@ def checkout(request):
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
     order = Order.objects.filter(buyer=buyer, ordered=False).first()
     response  = lipa_na_mpesa_online(buyer=buyer, order=order)
-    # order.ordered = True
-    # order.save()
     print(response)
+    if response:
+        payment = Payment.objects.create(
+            first_name=buyer.first_name,
+            last_name=buyer.last_name,
+            phone_number=buyer.phone_number,
+            order_number=order.reference
+        )
+        order.payment = payment
+        order.ordered = True
+        order.ordered_date = datetime.now()
+        order.payment_status = True
+        order.save()
     return Response(response, status=status.HTTP_200_OK)
 
 
