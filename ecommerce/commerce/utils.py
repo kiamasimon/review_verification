@@ -1,7 +1,7 @@
 from random import random
 
 import numpy as np
-from nltk.corpus import movie_reviews, product_reviews_1
+#from nltk.corpus import movie_reviews, product_reviews_1
 from nltk.classify import NaiveBayesClassifier
 from nltk.classify.util import accuracy as nltk_accuracy
 #import nltk
@@ -13,7 +13,7 @@ def extract_features(words):
     return dict([(word, True) for word in words])
 
 
-nltk.download('movie_reviews')
+#nltk.download('movie_reviews')
 # nltk.download('product_reviews_2')
 
 def SentimentAnalyzer():
