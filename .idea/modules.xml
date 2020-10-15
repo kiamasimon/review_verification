@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/Review_verification.iml" filepath="$PROJECT_DIR$/.idea/Review_verification.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/ecommerce.iml" filepath="$PROJECT_DIR$/.idea/ecommerce.iml" />
+>>>>>>> 4ebc21ca395c5bab2fef82636e29b43ccd3429c2
     </modules>
   </component>
 </project>
