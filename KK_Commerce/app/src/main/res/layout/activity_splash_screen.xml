@@ -14,7 +14,7 @@
         <View
             android:layout_width="20dp"
             android:layout_height="50dp"
-            android:background="@drawable/white_line"
+            android:background="#4CAF50"
             android:layout_centerHorizontal="true"
             android:id="@+id/first_line"/>
 
@@ -68,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/baloo"
-            android:text="E-COM"
+            android:text="SHOPY"
+            android:layout_marginTop="50dp"
             android:id="@+id/logo"
             android:textColor="#fff"
             android:textSize="100sp" />

@@ -1,12 +1,11 @@
 import json
-import random
 from datetime import datetime
 from pprint import pprint
 
 import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,10 +17,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 
+from commerce.analyzer import *
 from commerce.models import *
 from commerce.mpesa_credentials import MpesaAccessToken, LipanaMpesaPpassword
 from commerce.serializers import *
-from commerce.utils import SentimentAnalyzer
+from commerce.utils import *
 
 
 def getAccessToken(request):
@@ -48,16 +48,17 @@ def get_access_token(request):
         context = {
             'error': 'Invalid Credentials',
         }
-        return Response('Invalid Credentials', status=HTTP_400_BAD_REQUEST)
-    token, _ = Token.objects.get_or_create(user=user)
+        return Response(context, status=HTTP_400_BAD_REQUEST)
+    else:
+        token, _ = Token.objects.get_or_create(user=user)
 
-    buyer = Buyer.objects.get(user_ptr_id=user.id)
-    s = UserSerializer(buyer, many=False)
-    context = {
-        'token': token.key,
-    }
-    print(context)
-    return Response(context, status=HTTP_200_OK)
+        buyer = Buyer.objects.get(user_ptr_id=user.id)
+        s = UserSerializer(buyer, many=False)
+        context = {
+            'token': token.key,
+        }
+        print(context)
+        return Response(context, status=HTTP_200_OK)
 
 
 @csrf_exempt
@@ -156,6 +157,7 @@ def product_comments(request, product_id):
 @api_view(["GET"])
 @permission_classes((AllowAny,))
 def add_to_cart(request, product_id):
+    import random
     token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
     print(token)
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
@@ -459,6 +461,12 @@ def get_in_cart(request, product_id):
 
 @csrf_exempt
 def test_sentiment_analyzer(request):
-    response = SentimentAnalyzer()
-    print(response)
-    return JsonResponse(response)
+    an = manualPredict("Product Good")
+    return HttpResponse(an, status=HTTP_200_OK)
+
+
+# def test(request):
+#     context = {
+#
+#     }
+#     return render(request, 'commerce/index.html', context)

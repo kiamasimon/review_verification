@@ -60,12 +60,12 @@ public class LogInActivity extends AppCompatActivity {
 
                 if(!username.equals("") && !password.equals("")){
                     login(username, password);
-                }else if(!username.equals("")){
+                }else if(username.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Username Required", Snackbar.LENGTH_LONG);
                     sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));
                     sn.show();
-                }else if(!password.equals("")){
+                }else if(password.equals("")){
                     Snackbar sn = Snackbar.make(linearLayout, "Password Required", Snackbar.LENGTH_LONG);
                     sn.setTextColor(Color.parseColor("#ffffff"));
                     sn.setBackgroundTint(Color.parseColor("#990033"));

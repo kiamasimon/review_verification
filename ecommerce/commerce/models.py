@@ -74,7 +74,7 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     ordered_date = models.DateTimeField(null=True, blank=True)
     delivered = models.BooleanField(default=False)
-    billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+    billing_address = models.ForeignKey(Address, related_name='billing_address', blank=True, null=True, on_delete=models.SET_NULL)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     unique_ref = models.CharField(max_length=250)
     payment_status = models.BooleanField(default=False)
