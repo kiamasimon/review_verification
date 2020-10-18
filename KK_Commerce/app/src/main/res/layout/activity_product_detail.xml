@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Prodct Details"
+                android:text="Product Details"
                 android:textSize="25dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/primaryDarkColor"

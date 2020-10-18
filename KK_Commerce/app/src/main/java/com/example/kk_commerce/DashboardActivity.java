@@ -46,7 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
 //        toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhiteTrans));
         setSupportActionBar(toolbar);
         pageTitle = (TextView) toolbar.findViewById(R.id.tv_title);
-        pageTitle.setText("E-COM");
+        pageTitle.setText("SHOPY");
         pageTitle.setTextColor(getResources().getColor(R.color.colorWhiteTrans));
 //        getSupportActionBar().setTitle("E-COM");
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);

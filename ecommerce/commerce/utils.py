@@ -1,7 +1,7 @@
 from random import random
 
 import numpy as np
-from nltk.corpus import movie_reviews, product_reviews_1
+#from nltk.corpus import movie_reviews, product_reviews_1
 from nltk.classify import NaiveBayesClassifier
 from nltk.classify.util import accuracy as nltk_accuracy
 import pandas as pd
@@ -213,7 +213,8 @@ def Analyzer():
     # model = linear.model.LinearRegression()
 
 
-
+#nltk.download('movie_reviews')
+# nltk.download('product_reviews_2')
 
 
 
