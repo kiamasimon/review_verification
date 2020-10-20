@@ -247,6 +247,8 @@ def mark_as_delivered(request, order_id):
     order.delivered = True
     order.save()
     o = OrderSerializer(order, many=False)
+
+
     return Response(o.data, status=status.HTTP_200_OK)
 
 
@@ -288,10 +290,10 @@ def lipa_na_mpesa_online(buyer, order):
         "Password": LipanaMpesaPpassword.decode_password,
         "Timestamp": LipanaMpesaPpassword.lipa_time,
         "TransactionType": "CustomerPayBillOnline",
-        "Amount": 1,
-        "PartyA": 254111979693,
+        "Amount": order.total_amount,
+        "PartyA": buyer.phone_number,
         "PartyB": LipanaMpesaPpassword.Business_short_code,
-        "PhoneNumber": 254111979693,
+        "PhoneNumber": buyer.phone_number,
         "CallBackURL": "https://b9e932f378f5.ngrok.io/api/v1/confirmation",
         "AccountReference": str(order.unique_ref),
         "TransactionDesc": "Payment"
@@ -321,7 +323,7 @@ def checkout(request):
     token = Token.objects.get(key=request.META.get('HTTP_AUTHORIZATION').split()[1])
     buyer = Buyer.objects.filter(user_ptr_id=token.user_id).first()
     order = Order.objects.filter(buyer=buyer, ordered=False).first()
-    response  = lipa_na_mpesa_online(buyer=buyer, order=order)
+    response = lipa_na_mpesa_online(buyer=buyer, order=order)
     print(response)
     if response:
         payment = Payment.objects.create(

@@ -54,6 +54,15 @@
             android:text="Verified Review"
             android:layout_marginRight="10dp"
             android:id="@+id/verfied_unverified"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_tick"
+            android:text=" Verified Purchase"
+            android:layout_below="@+id/verfied_unverified"
+            android:layout_centerHorizontal="true"
+            android:textColor="#027512"/>
     </RelativeLayout>
 
 </RelativeLayout>
