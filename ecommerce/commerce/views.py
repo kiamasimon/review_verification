@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.template.response import TemplateResponse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
 from rest_framework import viewsets, permissions, status
@@ -289,12 +290,14 @@ def lipa_na_mpesa_online(buyer, order):
         "Amount": float(order.total_amount),
         "PartyA": f"{254}{buyer.phone_number[-9:]}",
         "PartyB": LipanaMpesaPpassword.Business_short_code,
-        "PhoneNumber": buyer.phone_number,
+        "PhoneNumber": f"{254}{buyer.phone_number[-9:]}",
         "CallBackURL": "https://b9e932f378f5.ngrok.io/api/v1/confirmation",
         "AccountReference": str(order.unique_ref),
         "TransactionDesc": "Payment"
     }
     response = requests.post(api_url, json=request, headers=headers)
+    print(json.loads(response.text))
+    print(f"{254}{buyer.phone_number[-9:]}")
     return json.loads(response.text)
 
 
@@ -330,7 +333,7 @@ def checkout(request):
         )
         order.payment = payment
         order.ordered = True
-        order.ordered_date = datetime.now()
+        order.ordered_date = timezone.now()
         order.payment_status = True
         order.save()
     return Response(response, status=status.HTTP_200_OK)
