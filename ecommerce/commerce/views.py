@@ -16,8 +16,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
-
-from commerce.analyzer import *
 from commerce.models import *
 from commerce.mpesa_credentials import MpesaAccessToken, LipanaMpesaPpassword
 from commerce.serializers import *
@@ -247,8 +245,6 @@ def mark_as_delivered(request, order_id):
     order.delivered = True
     order.save()
     o = OrderSerializer(order, many=False)
-
-
     return Response(o.data, status=status.HTTP_200_OK)
 
 
@@ -290,8 +286,8 @@ def lipa_na_mpesa_online(buyer, order):
         "Password": LipanaMpesaPpassword.decode_password,
         "Timestamp": LipanaMpesaPpassword.lipa_time,
         "TransactionType": "CustomerPayBillOnline",
-        "Amount": order.total_amount,
-        "PartyA": buyer.phone_number,
+        "Amount": float(order.total_amount),
+        "PartyA": f"{254}{buyer.phone_number[-9:]}",
         "PartyB": LipanaMpesaPpassword.Business_short_code,
         "PhoneNumber": buyer.phone_number,
         "CallBackURL": "https://b9e932f378f5.ngrok.io/api/v1/confirmation",
@@ -330,7 +326,7 @@ def checkout(request):
             first_name=buyer.first_name,
             last_name=buyer.last_name,
             phone_number=buyer.phone_number,
-            order_number=order.reference
+            order_number=order.unique_ref
         )
         order.payment = payment
         order.ordered = True
@@ -463,8 +459,9 @@ def get_in_cart(request, product_id):
 
 @csrf_exempt
 def test_sentiment_analyzer(request):
-    an = manualPredict("Product Good")
-    return HttpResponse(an, status=HTTP_200_OK)
+    an = SentimentAnalyzer()
+    print(an)
+    return JsonResponse(an)
 
 
 # def test(request):
